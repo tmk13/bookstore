@@ -5,11 +5,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.apress.bookstore.dao.UserDAO;
 import com.apress.bookstore.entity.User;
 import com.apress.springmvc.configuration.DBManager;
 
+@Service
 public class UserService {
 	
 	@Autowired

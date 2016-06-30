@@ -22,8 +22,8 @@ import com.apress.bookstore.validator.RegisterUserValidator;
 
 @Controller
 public class RegisterController {
-	@Autowired
-	private User user;
+//	@Autowired
+//	private User user;
 	@Autowired
 	private RegisterUserValidator registerUserValidator;
 	@Autowired
@@ -91,7 +91,7 @@ public class RegisterController {
 
 	@ModelAttribute("user")
 	public User getUser() {
-		return user;
+		return new User();
 	}
 
 }

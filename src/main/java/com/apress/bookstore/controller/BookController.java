@@ -18,8 +18,8 @@ import com.apress.bookstore.service.BookService;
 @Controller
 public class BookController {
 
-	@Autowired
-	private User user;
+//	@Autowired
+//	private User user;
 
 	@Autowired
 	private BookService bookService;
@@ -77,7 +77,7 @@ public class BookController {
 
 	@ModelAttribute("user")
 	public User getUser() {
-		return user;
+		return new User();
 	}
 
 }

@@ -26,6 +26,7 @@ hs_err_pid*
 .project
 .settings
 .idea
+.iml
 bin
 target
 *~

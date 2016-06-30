@@ -13,11 +13,13 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.stereotype.Service;
 
 import com.apress.bookstore.model.Author;
 import com.apress.bookstore.model.Book;
 import com.apress.bookstore.model.Category;
 
+@Service
 public class BookDAOImpl implements BookDAO {
 
 	@Autowired

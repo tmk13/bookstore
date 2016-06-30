@@ -25,8 +25,8 @@ import com.apress.bookstore.validator.UserValidator;
 @SessionAttributes("loggedUser")
 public class LoginController {
 
-	@Autowired
-	private User user;
+//	@Autowired
+//	private User user;
 	@Autowired
 	private UserValidator userValidator;
 	@Autowired
@@ -86,7 +86,7 @@ public class LoginController {
 
 	@ModelAttribute("user")
 	public User getUser() {
-		return user;
+		return new User();
 	}
 
 	@ModelAttribute("catList")

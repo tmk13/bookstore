@@ -1,6 +1,7 @@
 package com.apress.bookstore.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -8,6 +9,7 @@ import org.springframework.validation.Validator;
 import com.apress.bookstore.entity.User;
 import com.apress.bookstore.service.UserService;
 
+@Service
 public class RegisterUserValidator implements Validator {
 
 	@Autowired

@@ -5,12 +5,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.apress.bookstore.dao.BookDAO;
 import com.apress.bookstore.entity.Book;
 import com.apress.bookstore.entity.Category;
 import com.apress.springmvc.configuration.DBManager;
 
+@Service
 public class BookService {
 	
 	@Autowired

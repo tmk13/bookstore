@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Service;
 
 import com.apress.bookstore.model.User;
 import com.apress.bookstore.model.UserEntity;
 
+@Service
 public class UserDAOImpl implements UserDAO {
 
 	@Autowired

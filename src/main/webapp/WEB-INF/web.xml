@@ -5,10 +5,14 @@
 
 	<!-- Definicja kontenera głównego frameworku Spring współdzielonego przez 
 		wszystkie serwlety i filtry -->
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/spring/root-context.xml</param-value>
-	</context-param>
+	<!--<context-param>-->
+		<!--<param-name>contextClass</param-name>-->
+		<!--<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>-->
+	<!--</context-param>-->
+	<!--<context-param>-->
+		<!--<param-name>contextConfigLocation</param-name>-->
+		<!--<param-value>/WEB-INF/spring/root-context.xml</param-value>-->
+	<!--</context-param>-->
 	<context-param>
 		<param-name>home</param-name>
 		<param-value>/bookstore</param-value>
@@ -33,16 +37,31 @@
 	<servlet>
 		<servlet-name>bookstore</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!--<init-param>-->
+			<!--<param-name>contextConfigLocation</param-name>-->
+			<!--<param-value>/WEB-INF/spring/bookstore/bookstore-servlet.xml-->
+			<!--</param-value>-->
+		<!--</init-param>-->
 		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/spring/bookstore/bookstore-servlet.xml
+			<param-name>contextClass</param-name>
+			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext
 			</param-value>
 		</init-param>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/applicationContext.xml
+			<param-value>
+				com.apress.springmvc.configuration.AppConfiguration
 			</param-value>
 		</init-param>
+		<!--<init-param>-->
+			<!--<param-name>contextConfigLocation</param-name>-->
+			<!--<param-value></param-value>-->
+		<!--</init-param>-->
+		<!--<init-param>-->
+			<!--<param-name>contextConfigLocation</param-name>-->
+			<!--<param-value>/WEB-INF/applicationContext.xml-->
+			<!--</param-value>-->
+		<!--</init-param>-->
 		<init-param>
 			<param-name>imageURL</param-name>
 			<param-value>/bookstore/images</param-value>
