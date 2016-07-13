@@ -28,31 +28,31 @@ body {
 .leftbar {
 	float: left;
 	text-align: center;
-	height: 330px;
+	height: 530px;
 	width: 150px;
 	background: #FFFFFF;
 	border: 1px solid #00FFFF;
 }
 
-.loginbar {
-	float: left;
-	clear: left;
-	text-align: center;
-	height: 310px;
-	width: 150px;
-	background: #FFFFFF;
-	border: 1px solid #00FFFF;
-}
+/*.loginbar {*/
+	/*float: left;*/
+	/*clear: left;*/
+	/*text-align: center;*/
+	/*height: 310px;*/
+	/*width: 150px;*/
+	/*background: #FFFFFF;*/
+	/*border: 1px solid #00FFFF;*/
+/*}*/
 
-.loggedbar {
-	float: left;
-	clear: left;
-	text-align: center;
-	height: 150px;
-	width: 150px;
-	background: #FFFFFF;
-	border: 1px solid #00FFFF;
-}
+/*.loggedbar {*/
+	/*float: left;*/
+	/*clear: left;*/
+	/*text-align: center;*/
+	/*height: 150px;*/
+	/*width: 150px;*/
+	/*background: #FFFFFF;*/
+	/*border: 1px solid #00FFFF;*/
+/*}*/
 
 .search {
 	margin-left: 15px;

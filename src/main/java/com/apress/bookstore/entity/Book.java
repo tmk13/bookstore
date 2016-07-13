@@ -3,20 +3,7 @@ package com.apress.bookstore.entity;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "book")
@@ -41,9 +28,8 @@ public class Book implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Basic(optional = false)
 	@Column(name = "ID", nullable = false)
-	private Integer id;
+	private Long id;
 
 	@Basic(optional = false)
 	@Column(name = "BOOK_TITLE", nullable = false, length = 60)
@@ -55,21 +41,23 @@ public class Book implements Serializable {
 
 	@Basic(optional = false)
 	@Column(name = "PRICE", nullable = false, precision = 6, scale = 2)
-	private float price;
+	private Float price;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
+	@OrderBy(value = "lastName")
 	@JoinTable(name = "book_author", joinColumns = @JoinColumn(name = "BOOK_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID"))
 	private List<Author> authors;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
+	@OrderBy(value = "categoryDescription")
 	@JoinTable(name = "book_category", joinColumns = @JoinColumn(name = "BOOK_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID"))
 	private List<Category> categories;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -89,11 +77,11 @@ public class Book implements Serializable {
 		this.publisherName = publisherName;
 	}
 
-	public float getPrice() {
+	public Float getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(Float price) {
 		this.price = price;
 	}
 

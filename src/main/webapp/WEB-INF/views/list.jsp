@@ -24,7 +24,7 @@
 			<tr>
 				<th id="th-title">Tytuł książki</th>
 				<th id="th-author">Autor</th>
-				<th id="th-author">Wydawca</th>
+				<th id="th-publisher">Wydawca</th>
 				<th id="th-price">Cena</th>
 			</tr>
 		</thead>

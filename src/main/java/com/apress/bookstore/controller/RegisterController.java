@@ -3,6 +3,9 @@ package com.apress.bookstore.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.apress.bookstore.dto.RegistrationUserFormDTO;
+import com.apress.bookstore.repository.CategoryRepository;
+import com.apress.bookstore.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,6 +23,8 @@ import com.apress.bookstore.service.BookService;
 import com.apress.bookstore.service.UserService;
 import com.apress.bookstore.validator.RegisterUserValidator;
 
+import javax.validation.Valid;
+
 @Controller
 public class RegisterController {
 //	@Autowired
@@ -27,31 +32,35 @@ public class RegisterController {
 	@Autowired
 	private RegisterUserValidator registerUserValidator;
 	@Autowired
-	private BookService bookService;
-	@Autowired
 	private UserService userService;
+	@Autowired
+	private CategoryService categoryService;
 
 	@RequestMapping(value = "/register.html", method = RequestMethod.GET)
-	public ModelAndView register(@ModelAttribute("userRegister") User userRegister,
-			@ModelAttribute("catList") ArrayList<Category> catList, ModelAndView mav) {
-		mav.addObject("catList", catList);
-		mav.addObject("userRegister", userRegister);
+	public ModelAndView register(ModelAndView mav) {
+		RegistrationUserFormDTO registrationUserFormDTO = new RegistrationUserFormDTO();
+		mav.addObject("registrationUserFormDTO", registrationUserFormDTO);
 		return mav;
 	}
 
 	@RequestMapping(value = "/register.html", method = RequestMethod.POST)
-	public ModelAndView register(@ModelAttribute("userRegister") User userRegister, BindingResult result,
-			SessionStatus status, WebRequest request, ModelAndView mav,
-			@ModelAttribute("catList") ArrayList<Category> catList, final RedirectAttributes redirectAttributes) {
+	public ModelAndView register(@ModelAttribute("registrationUserFormDTO") @Valid RegistrationUserFormDTO registrationUserFormDTO, BindingResult result,
+								 SessionStatus status, WebRequest request, ModelAndView mav,
+								 @ModelAttribute("catList") ArrayList<Category> catList, final RedirectAttributes redirectAttributes) {
 
-		registerUserValidator.validate(userRegister, result);
+		if (result.hasErrors()) {
+			mav.setViewName("register");
+			return mav;
+		}
+
+		userService.validateUser(registrationUserFormDTO, result);
 
 		if (result.hasErrors()) {
 			mav.setViewName("register");
 			return mav;
 		} else {
-			System.out.println(userRegister.getUserName() + " " + userRegister.getUserPassword());
-			if (userService.createUser(userRegister)) {
+
+			if (userService.createUser(registrationUserFormDTO) != null) {
 				redirectAttributes.addFlashAttribute("catList", catList);
 				mav.setViewName("redirect:/succeed.html");
 				return mav;
@@ -64,29 +73,20 @@ public class RegisterController {
 	}
 
 	@RequestMapping(value = "/succeed.html", method = RequestMethod.GET)
-	public ModelAndView succeed(@ModelAttribute("catList") final ArrayList<Category> catList,
-			final BindingResult mapping1BindingResult, final ModelAndView mav) {
-		mav.addObject("catList", catList);
+	public ModelAndView succeed(final ModelAndView mav) {
 		mav.setViewName("succeed");
 		return mav;
 	}
 
 	@RequestMapping(value = "/error.html", method = RequestMethod.GET)
-	public ModelAndView error(@ModelAttribute("catList") final ArrayList<Category> catList,
-			final BindingResult mapping1BindingResult, final ModelAndView mav) {
-		mav.addObject("catList", catList);
+	public ModelAndView error(final ModelAndView mav) {
 		mav.setViewName("error");
 		return mav;
 	}
 
 	@ModelAttribute("catList")
 	public List<Category> catList() {
-		return bookService.getCategoryList();
-	}
-
-	@ModelAttribute("userRegister")
-	public User getUserRegister() {
-		return new User();
+		return categoryService.getCategoryList();
 	}
 
 	@ModelAttribute("user")

@@ -3,6 +3,9 @@ package com.apress.bookstore.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.apress.bookstore.dto.BookFormDTO;
+import com.apress.bookstore.repository.BookRepository;
+import com.apress.bookstore.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -24,6 +27,8 @@ import com.apress.bookstore.service.BookService;
 import com.apress.bookstore.service.CategoryService;
 import com.apress.bookstore.validator.BookValidator;
 
+import javax.validation.Valid;
+
 @Controller
 public class AddBookController {
 
@@ -33,26 +38,23 @@ public class AddBookController {
 	private AuthorService authorService;
 	@Autowired
 	private CategoryService categoryService;
-	@Autowired
-	private BookValidator bookValidator;
 
 	@RequestMapping(value = "/addBook.html", method = RequestMethod.GET)
-	public ModelAndView initForm(@ModelAttribute("catList") ArrayList<Category> catList, ModelAndView mav) {
+	public ModelAndView initForm(ModelAndView mav) {
 		mav.setViewName("addBook");
-		mav.addObject("catList", catList);
-		Book book = new Book();
-		book.setBookTitle("Dodaj książkę :");
-		mav.addObject("book", book);
+		BookFormDTO bookFormDTO = new BookFormDTO();
+		bookFormDTO.setBookTitle("Dodaj książkę :");
+		mav.addObject("bookFormDTO", bookFormDTO);
 		return mav;
 	}
 
 
-	@InitBinder("book")
+	@InitBinder("bookFormDTO")
 	public void initBinder(WebDataBinder binder, WebRequest request) {
 		binder.setDisallowedFields(new String[] { "authors", "categories" });
-		Book book = (Book) binder.getTarget();
-		long authorId = -1;
-		long categoryId = -1;
+		BookFormDTO bookFormDTO = (BookFormDTO) binder.getTarget();
+		long authorId;
+		long categoryId;
 
 		String[] authorsParams = request.getParameterValues("authors");
 
@@ -63,7 +65,7 @@ public class AddBookController {
 				Author author = authorService.getAuthorById(authorId);
 				authorList.add(author);
 			}
-			book.setAuthors(authorList);
+			bookFormDTO.setAuthors(authorList);
 		}
 
 		String[] categoriesParams = request.getParameterValues("categories");
@@ -75,18 +77,13 @@ public class AddBookController {
 				Category category = categoryService.getCategoryById(categoryId);
 				categoryList.add(category);
 			}
-			book.setCategories(categoryList);
+			bookFormDTO.setCategories(categoryList);
 		}
-	}
-
-	@ModelAttribute("user")
-	public User populateUser() {
-		return new User();
 	}
 
 	@ModelAttribute("catList")
 	public List<Category> catList() {
-		return bookService.getCategoryList();
+		return categoryService.getCategoryList();
 	}
 
 	@ModelAttribute("authorList")
@@ -94,17 +91,22 @@ public class AddBookController {
 		return authorService.getAuthorList();
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView processSubmit(@ModelAttribute("catList") ArrayList<Category> catList,
-			@ModelAttribute("book") Book book, BindingResult result,
-			SessionStatus status, ModelAndView mav) {
-		bookValidator.validate(book, result);
+	@RequestMapping(value = "/addBook.html", method = RequestMethod.POST)
+	public ModelAndView processSubmit(@ModelAttribute("bookFormDTO") @Valid BookFormDTO bookFormDTO, BindingResult result,
+									  SessionStatus status, ModelAndView mav) {
+//
 		if (result.hasErrors()) {
 			mav.setViewName("addBook");
-			mav.addObject("catList", catList);
+			return mav;
+		}
+
+		bookService.validateBook(bookFormDTO, result);
+
+		if (result.hasErrors()) {
+			mav.setViewName("addBook");
 			return mav;
 		} else {
-			bookService.createBook(book);
+			bookService.createBook(bookFormDTO);
 			mav.setViewName("redirect:/bookList.html");
 			return mav;
 		}

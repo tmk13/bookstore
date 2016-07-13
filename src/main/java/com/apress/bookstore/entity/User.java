@@ -1,16 +1,9 @@
 package com.apress.bookstore.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -26,15 +19,14 @@ import org.springframework.stereotype.Component;
 public class User implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 5016574667394468414L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Basic(optional = false)
 	@Column(name = "ID", nullable = false)
-	private Integer id;
+	private Long id;
 
 	@Basic(optional = false)
 	@Column(name = "USER_NAME", nullable = false, length = 60)
@@ -44,17 +36,27 @@ public class User implements Serializable {
 	@Column(name = "USER_PASSWORD", nullable = false, length = 60)
 	private String userPassword;
 
+	@Basic(optional = false)
+	@Column(name = "ENABLED", nullable = false)
+	private Boolean enabled;
+
+	@ManyToMany
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"),
+							inverseJoinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID"))
+	private List<Role> roles;
+
 	public User() {
-		id = -1;
+		id = -1l;
 		userName = "";
 		userPassword = "";
+		enabled = false;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -72,6 +74,22 @@ public class User implements Serializable {
 
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	@Override

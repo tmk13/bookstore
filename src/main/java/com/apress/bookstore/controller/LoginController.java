@@ -3,8 +3,14 @@ package com.apress.bookstore.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.apress.bookstore.repository.CategoryRepository;
+import com.apress.bookstore.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,6 +26,10 @@ import com.apress.bookstore.entity.User;
 import com.apress.bookstore.service.BookService;
 import com.apress.bookstore.validator.UserValidator;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 @Scope("session")
 @SessionAttributes("loggedUser")
@@ -30,10 +40,10 @@ public class LoginController {
 	@Autowired
 	private UserValidator userValidator;
 	@Autowired
-	private BookService bookService;
+	private CategoryService categoryService;
 
-	@RequestMapping(value = "/login.html", method = RequestMethod.POST)
-	public ModelAndView login(@ModelAttribute("catList") ArrayList<Category> catList,
+	@RequestMapping(value = "/loginOld.html", method = RequestMethod.POST)
+	public ModelAndView loginOld(@ModelAttribute("catList") ArrayList<Category> catList,
 			@ModelAttribute("user") User user,
 			BindingResult result,
 			SessionStatus status, WebRequest request, ModelAndView mav) {
@@ -70,8 +80,8 @@ public class LoginController {
 
 	}
 
-	@RequestMapping(value = "/logout.html", method = RequestMethod.POST)
-	public ModelAndView logout(@ModelAttribute("user") User user, WebRequest request, ModelAndView mav) {
+	@RequestMapping(value = "/logoutOld.html", method = RequestMethod.POST)
+	public ModelAndView logoutOld(@ModelAttribute("user") User user, WebRequest request, ModelAndView mav) {
 
 		user.setId(null);
 		user.setUserName(null);
@@ -84,6 +94,23 @@ public class LoginController {
 		return mav;
 	}
 
+	@Secured("ROLE_ANONYMOUS")
+	@RequestMapping(value = "/loginPage.html")
+	public ModelAndView loginPage(ModelAndView mav) {
+		mav.setViewName("loginPage");
+		return mav;
+	}
+
+	@RequestMapping(value = "/logout.do", method = RequestMethod.POST)
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null)
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+
+		mav.setViewName("redirect:/loginPage.html?logout");
+		return mav;
+	}
+
 	@ModelAttribute("user")
 	public User getUser() {
 		return new User();
@@ -91,7 +118,7 @@ public class LoginController {
 
 	@ModelAttribute("catList")
 	public List<Category> catList() {
-		return bookService.getCategoryList();
+		return categoryService.getCategoryList();
 	}
 
 }

@@ -22,25 +22,25 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-		User user = (User) obj;
-    	
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userName", "field.required",
-				"Niepoprawna nazwa użytkownika lub błędne hasło!");
-
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userPassword", "field.required",
-				"Niepoprawna nazwa użytkownika lub błędne hasło!");
-
-		if (errors.hasFieldErrors("userName") || errors.hasFieldErrors("userPassword"))
-			return;
-
-		User loggedUser = null;
-		if ((loggedUser = userService.checkLogin(user)) == null)
-			errors.rejectValue("userName", "", "Niepoprawna nazwa użytkownika lub błędne hasło!");
-		else {
-			user.setId(loggedUser.getId());
-			user.setUserName(loggedUser.getUserName());
-			user.setUserPassword(loggedUser.getUserPassword());
-		}
+//		User user = (User) obj;
+//
+//		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userName", "field.required",
+//				"Niepoprawna nazwa użytkownika lub błędne hasło!");
+//
+//		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userPassword", "field.required",
+//				"Niepoprawna nazwa użytkownika lub błędne hasło!");
+//
+//		if (errors.hasFieldErrors("userName") || errors.hasFieldErrors("userPassword"))
+//			return;
+//
+//		User loggedUser;
+//		if ((loggedUser = userService.checkLogin(user)) == null)
+//			errors.rejectValue("userName", "", "Niepoprawna nazwa użytkownika lub błędne hasło!");
+//		else {
+//			user.setId(loggedUser.getId());
+//			user.setUserName(loggedUser.getUserName());
+//			user.setUserPassword(loggedUser.getUserPassword());
+//		}
 
     }
 

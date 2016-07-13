@@ -26,9 +26,8 @@ public class Author implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Basic(optional = false)
 	@Column(name = "ID", nullable = false)
-	private Integer id;
+	private Long id;
 
 	@Basic(optional = false)
 	@Column(name = "FIRST_NAME", nullable = false, length = 20)
@@ -38,11 +37,11 @@ public class Author implements Serializable {
 	@Column(name = "LAST_NAME", nullable = false, length = 20)
 	private String lastName;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

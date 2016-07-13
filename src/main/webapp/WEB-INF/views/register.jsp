@@ -26,17 +26,19 @@
 			<br />
 			<jsp:include page="leftColumn.jsp" flush="true" />
 
-	       	<form:form action="register.html" method="post" modelAttribute="userRegister">
-		            Nazwa użytkownika<br />
-		            <form:input type="text" path="userName" size="10" />
+	       	<form:form action="register.html" method="post" modelAttribute="registrationUserFormDTO">
+		            Nazwa użytkownika
+					<form:errors path="name" cssClass="error"/>
+					<br />
+		            <form:input type="text" path="name" size="10" />
 		            <br />
 		            Hasło
+					<form:errors path="password" cssClass="error"/>
 		            <br />
-		            <form:input type="password" path="userPassword" size="10" />
+		            <form:input type="password" path="password" size="10" />
 		           <br /> <br />
 		            <input type="submit" value="Zapisz">
 		            <br />
-		            <form:errors path="*" cssClass="error"/>
 			</form:form>
 
 		</div>

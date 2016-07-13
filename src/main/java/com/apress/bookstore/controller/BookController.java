@@ -3,6 +3,9 @@ package com.apress.bookstore.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.apress.bookstore.repository.BookRepository;
+import com.apress.bookstore.repository.CategoryRepository;
+import com.apress.bookstore.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,6 +26,8 @@ public class BookController {
 
 	@Autowired
 	private BookService bookService;
+	@Autowired
+	private CategoryService categoryService;
 
 	@RequestMapping("/index.html")
 	public String indexController() {
@@ -30,49 +35,40 @@ public class BookController {
 	}
 
 	@RequestMapping("/home.html")
-	public ModelAndView homeController(@ModelAttribute("catList") ArrayList<Category> catList, ModelAndView mav) {
+	public ModelAndView homeController(ModelAndView mav) {
 		mav.setViewName("home");
-		mav.addObject("catList", catList);
 		return mav;
 	}
 
 	@RequestMapping("/bookList.html")
-	public ModelAndView bookListController(@ModelAttribute("allBooks") ArrayList<Book> allBooks,
-			@ModelAttribute("catList") ArrayList<Category> catList, ModelAndView mav) {
+	public ModelAndView bookListController(@ModelAttribute("allBooks") ArrayList<Book> allBooks, ModelAndView mav) {
 		mav.setViewName("bookList");
 		mav.addObject("bookList", bookService.getAllBooksList());
-		mav.addObject("catList", catList);
 		return mav;
 	}
 	@RequestMapping("/allBooks.html")
-	public ModelAndView allBooksController(@ModelAttribute("allBooks") ArrayList<Book> allBooks,
-			@ModelAttribute("catList") ArrayList<Category> catList, ModelAndView mav) {
+	public ModelAndView allBooksController(@ModelAttribute("allBooks") ArrayList<Book> allBooks, ModelAndView mav) {
 		mav.setViewName("allBooks");
 		mav.addObject("allBooks", bookService.getAllBooksList());
-		mav.addObject("catList", catList);
 		return mav;
 	}
 	@RequestMapping("/category.html")
-	public ModelAndView byCategoryBooksController(@RequestParam("category") String category,
-			@ModelAttribute("catList") ArrayList<Category> catList, ModelAndView mav) {
+	public ModelAndView byCategoryBooksController(@RequestParam("category") String category, ModelAndView mav) {
 		mav.setViewName("category");
 		mav.addObject("allBooks", bookService.getBooksByCategoryList(category));
-		mav.addObject("catList", catList);
 		return mav;
 	}
 
 	@RequestMapping("/searchResult.html")
-	public ModelAndView searchBooksController(@RequestParam("keyWord") String keyWord,
-			@ModelAttribute("catList") ArrayList<Category> catList, ModelAndView mav) {
+	public ModelAndView searchBooksController(@RequestParam("keyWord") String keyWord, ModelAndView mav) {
 		mav.setViewName("searchResult");
 		mav.addObject("allBooks", bookService.getBooksByKeyWordList(keyWord));
-		mav.addObject("catList", catList);
 		return mav;
 	}
 
 	@ModelAttribute("catList")
 	public List<Category> catList() {
-		return bookService.getCategoryList();
+		return categoryService.getCategoryList();
 	}
 
 	@ModelAttribute("user")
