@@ -86,8 +86,9 @@ public class BookService {
 //		return allBooks;
 //	}
 
-	public void validateBook(BookFormDTO bookFormDTO, BindingResult result) {
+	public boolean validateBook(BookFormDTO bookFormDTO, BindingResult result) {
 		bookValidator.validate(bookFormDTO, result);
+		return !result.hasErrors();
 	}
 
 	@Transactional

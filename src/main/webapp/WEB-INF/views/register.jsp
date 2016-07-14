@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
@@ -11,7 +12,7 @@
 		<link rel="stylesheet" href="css/bookstore.css" type="text/css" />
 		<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 		<script src="js/bookstore.js" charset="UTF-8"></script>
-		<title>Twoja księgarnia</title>
+		<title><spring:message code="bookstore.BookController.home.title"/> </title>
          <style>
             .error {
                 color: red;
@@ -27,17 +28,18 @@
 			<jsp:include page="leftColumn.jsp" flush="true" />
 
 	       	<form:form action="register.html" method="post" modelAttribute="registrationUserFormDTO">
-		            Nazwa użytkownika
+				<spring:message code="bookstore.RegisterController.register.userName"/>
 					<form:errors path="name" cssClass="error"/>
 					<br />
 		            <form:input type="text" path="name" size="10" />
 		            <br />
-		            Hasło
+				<spring:message code="bookstore.LoginController.loginPage.password"/>
 					<form:errors path="password" cssClass="error"/>
 		            <br />
 		            <form:input type="password" path="password" size="10" />
 		           <br /> <br />
-		            <input type="submit" value="Zapisz">
+				<spring:message code="bookstore.RegisterController.register.save" var="save"/>
+		            <input type="submit" value="${save}">
 		            <br />
 			</form:form>
 

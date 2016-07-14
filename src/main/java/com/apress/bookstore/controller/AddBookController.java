@@ -43,7 +43,6 @@ public class AddBookController {
 	public ModelAndView initForm(ModelAndView mav) {
 		mav.setViewName("addBook");
 		BookFormDTO bookFormDTO = new BookFormDTO();
-		bookFormDTO.setBookTitle("Dodaj książkę :");
 		mav.addObject("bookFormDTO", bookFormDTO);
 		return mav;
 	}
@@ -100,9 +99,7 @@ public class AddBookController {
 			return mav;
 		}
 
-		bookService.validateBook(bookFormDTO, result);
-
-		if (result.hasErrors()) {
+		if (!bookService.validateBook(bookFormDTO, result)) {
 			mav.setViewName("addBook");
 			return mav;
 		} else {

@@ -204,8 +204,10 @@ public class AppConfiguration extends WebMvcConfigurerAdapter implements WebAppl
 
     @Bean
     public SessionLocaleResolver localeResolver() {
+//        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
-//        localeResolver.setDefaultLocale(new Locale("pl_PL"));
+        localeResolver.setDefaultLocale(new Locale("pl"));
+//        localeResolver.setCookieName("language");
         return localeResolver;
     }
 

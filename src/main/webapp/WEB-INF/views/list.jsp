@@ -1,20 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html >
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-2">
-<title>Twoja księgarnia</title>
+<title><spring:message code="bookstore.BookController.home.title"/> </title>
 </head>
 <body>
 
 	<c:if test="${param.category != null}">
 		<div>
+			<spring:message code="bookstore.AddBookController.list.categoryList" var="categoryList"/>
 			<span class="label" style="margin-left: 15px;"> <c:out
-					value="Lista książek
-				kategorii ${param.category }"></c:out>
+					value="${categoryList} ${param.category }"></c:out>
 			</span>
 		</div>
 	</c:if>
@@ -22,10 +23,10 @@
 	<table id="grid">
 		<thead>
 			<tr>
-				<th id="th-title">Tytuł książki</th>
-				<th id="th-author">Autor</th>
-				<th id="th-publisher">Wydawca</th>
-				<th id="th-price">Cena</th>
+				<th id="th-title"><spring:message code="bookstore.AddBookController.addBook.title"/> </th>
+				<th id="th-author"><spring:message code="bookstore.AddBookController.addBook.author"/> </th>
+				<th id="th-publisher"><spring:message code="bookstore.AddBookController.addBook.publisher"/> </th>
+				<th id="th-price"><spring:message code="bookstore.AddBookController.addBook.price"/> </th>
 			</tr>
 		</thead>
 

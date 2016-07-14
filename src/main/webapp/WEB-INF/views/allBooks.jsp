@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html >
 
 <html>
@@ -10,7 +10,7 @@
 <script src="js/jquery-1.9.1.js"></script>
 <link rel="stylesheet" href="css/bookstore.css" type="text/css" />
 <script src="js/bookstore.js" type="text/javascript"></script>
-<title>Twoja księgarnia</title>
+<title><spring:message code="bookstore.BookController.home.title" /> </title>
 </head>
 
 <body>
@@ -20,8 +20,8 @@
 		<br />
 		<jsp:include page="leftColumn.jsp" flush="true" />
 		<div>
-			<span class="label" style="margin-left: 15px;">Lista wszystkich
-				książek</span>
+			<span class="label" style="margin-left: 15px;"><spring:message
+                    code="bookstore.AddBookController.allBooks.allBooksList"/> </span>
 		</div>
 
 

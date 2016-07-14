@@ -2,6 +2,7 @@ package com.apress.bookstore.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.apress.bookstore.repository.BookRepository;
 import com.apress.bookstore.repository.CategoryRepository;
@@ -11,12 +12,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.LocaleContextResolver;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.apress.bookstore.entity.Book;
 import com.apress.bookstore.entity.Category;
 import com.apress.bookstore.entity.User;
 import com.apress.bookstore.service.BookService;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Controller
 public class BookController {
@@ -28,6 +34,10 @@ public class BookController {
 	private BookService bookService;
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private SessionLocaleResolver localeResolver;
+//    @Autowired
+//    private CookieLocaleResolver localeResolver;
 
 	@RequestMapping("/index.html")
 	public String indexController() {
@@ -64,6 +74,17 @@ public class BookController {
 		mav.setViewName("searchResult");
 		mav.addObject("allBooks", bookService.getBooksByKeyWordList(keyWord));
 		return mav;
+	}
+
+	@RequestMapping("/language.html")
+	public ModelAndView language(@RequestParam("language") String language, WebRequest request, ModelAndView modelAndView) {
+        localeResolver.setDefaultLocale(new Locale(language));
+
+		String referer = request.getHeader("Referer");
+		String redirect = referer.substring(referer.lastIndexOf("/"));
+
+		modelAndView.setViewName("redirect:" + redirect);
+		return modelAndView;
 	}
 
 	@ModelAttribute("catList")

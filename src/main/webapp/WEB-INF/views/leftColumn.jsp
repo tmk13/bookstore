@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
         pageEncoding="UTF-8" isELIgnored="false" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
@@ -16,19 +17,22 @@
         <li>
             <div>
                 <a class="link1" href="${initParam.home}"> <span class="label"
-                                                                 style="margin-left: 15px;">Strona domowa</span>
+                                                                 style="margin-left: 15px;"><spring:message
+                        code="bookstore.BookController.leftColumn.homepage"/></span>
                 </a>
             </div>
         </li>
         <li>
             <div>
-                <a class="link1" href="allBooks.html"><span
-                        style="margin-left: 15px;" class="label">Wszystkie książki</span></a>
+                <a class="link1" href="allBooks.html?language=en"><span
+                        style="margin-left: 15px;" class="label"><spring:message
+                        code="bookstore.BookController.leftColumn.allbooks"/></span></a>
             </div>
         </li>
         <li>
             <div>
-                <span class="label" style="margin-left: 15px;">Kategorie</span>
+                <span class="label" style="margin-left: 15px;"><spring:message
+                        code="bookstore.BookController.leftColumn.categories"/></span>
             </div>
             <ul>
                 <c:forEach var="category" items="${catList}">
@@ -49,7 +53,8 @@
         </li>
         <li>
             <div>
-                <span class="label" style="margin-left: 15px;">Kontakt</span>
+                <span class="label" style="margin-left: 15px;"><spring:message
+                        code="bookstore.BookController.leftColumn.contact"/></span>
 
             </div>
         </li>
@@ -59,41 +64,47 @@
                                                                    type="text" name="keyWord" size="7"/> <span
             class="tooltip_message">?</span>
         <p/>
-        <input id="submit" type="submit" value="Szukaj"/>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+        <input id="submit" type="submit" value=
+        <spring:message code="bookstore.BookController.leftColumn.search"/>
+                </form>
     </form>
 
-    <br/><br/>
-    <sec:authorize access="isAnonymous()">
-        <a href="loginPage.html">Zaloguj</a>
+        <br/><br/>
+        <sec:authorize access="isAnonymous()">
+        <a href="loginPage.html"><spring:message code="bookstore.BookController.leftColumn.login"/></a>
         <br/><br/>
         <form:form action="register.html" method="get">
-            Nie masz konta?
-            <br />
-            <%--<input type="submit" value="Zarejestruj">--%>
-            <a href="register.html">Zarejestruj</a>
-        </form:form>
-    </sec:authorize>
-    <sec:authorize access="hasRole('ROLE_USER')">
+            <spring:message code="bookstore.BookController.leftColumn.doNotHaveAccount"/>
         <br/>
-        <b>Zalogowany:</b>
+            <%--<input type="submit" value="Zarejestruj">--%>
+        <a href="register.html"><spring:message code="bookstore.BookController.leftColumn.register"/></a>
+        </form:form>
+        </sec:authorize>
+        <sec:authorize access="hasRole('ROLE_USER')">
+        <br/>
+        <b><spring:message code="bookstore.BookController.leftColumn.logged"/>:</b>
         <br/><br/>
         <b>
             <sec:authentication property="principal.username"/>
         </b>
         <br/><br/>
-        <%--<a href="loginPage.html?logout">Wyloguj</a>--%>
+            <%--<a href="loginPage.html?logout">Wyloguj</a>--%>
         <form action="logout.do" method="post">
-            <input type="submit" value="Wyloguj">
+            <spring:message code="bookstore.BookController.leftColumn.logout" var="logout"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+            <input type="submit" value="${logout}">
                 <%--<a href="logout.do">Wyloguj</a>--%>
         </form>
-        <%--<a href="<c:out value="j_spring_security_logout" />">Wyloguj</a>--%>
-        <%--<form action="/mylogout.html" method="get" >--%>
-        <%--&lt;%&ndash;<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />&ndash;%&gt;--%>
-        <%--<input type="submit" value="Wyloguj">--%>
-        <%--</form>--%>
-    </sec:authorize>
-
+            <%--<a href="<c:out value="j_spring_security_logout" />">Wyloguj</a>--%>
+            <%--<form action="/mylogout.html" method="get" >--%>
+            <%--&lt;%&ndash;<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />&ndash;%&gt;--%>
+            <%--<input type="submit" value="Wyloguj">--%>
+            <%--</form>--%>
+        </sec:authorize>
+        <br/>
+        <a href="language.html?language=uk"><img src="resources/uk.png"></a>
+        <a href="language.html?language=pl"><img src="resources/pl.png"></a>
 </div>
 </body>
 
@@ -112,4 +123,3 @@
 <%--<c:if test="${sessionScope.loggedUser.userName != null }">--%>
 <%--<jsp:include page="logoutPage.jsp" flush="true" />--%>
 <%--</c:if>--%>
-

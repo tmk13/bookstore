@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-2"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 	<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html >
 <html>
 <head>
@@ -10,7 +11,7 @@
 <script src="js/jquery-1.9.1.js"></script>
 <link rel="stylesheet" href="css/bookstore.css" type="text/css" />
 <script src="js/bookstore.js"></script>
-<title>Twoja ksiêgarnia</title>
+<title><spring:message code="bookstore.BookController.home.title"/> </title>
 
 </head>
 <body>
@@ -22,7 +23,8 @@
 			<c:if test="${param.category != null}">
 				<div>
 					<span class="label" style="margin-left: 15px;">
-					<c:out value="Lista ksi±¿ek kategorii "></c:out>
+						<spring:message code="bookstore.AddBookController.list.categoryList" var="categoryList"/>
+					<c:out value="${categoryList} "></c:out>
 					<c:out value="${param.category }: ${fn:length(allBooks) }" />
 					</span>
 				</div>
@@ -31,10 +33,10 @@
 		<table id="grid">
 			<thead>
 				<tr>
-					<th id="th-title">Tytu³ ksi±¿ki</th>
-					<th id="th-author">Autor</th>
-					<th id="th-author">Wydawca</th>
-					<th id="th-price">Cena</th>
+					<th id="th-title"><spring:message code="bookstore.AddBookController.addBook.title"/> </th>
+					<th id="th-author"><spring:message code="bookstore.AddBookController.addBook.author"/> </th>
+					<th id="th-publisher"><spring:message code="bookstore.AddBookController.addBook.publisher"/> </th>
+					<th id="th-price"><spring:message code="bookstore.AddBookController.addBook.price"/> </th>
 				</tr>
 			</thead>
 			<tbody>

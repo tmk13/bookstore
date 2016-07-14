@@ -18,8 +18,8 @@ public class BookValidator implements Validator {
 
     @Autowired
     private MessageSource messageSource;
-    @Autowired
-    private LocaleContext localeContext;
+//    @Autowired
+//    private LocaleContext localeContext;
 
     @Override
 	public boolean supports(Class<?> aClass) {

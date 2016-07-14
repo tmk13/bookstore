@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
         pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
@@ -11,7 +12,7 @@
     <link rel="stylesheet" href="css/bookstore.css" type="text/css"/>
     <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
     <script src="js/bookstore.js" charset="UTF-8"></script>
-    <title>Twoja księgarnia</title>
+    <title><spring:message code="bookstore.BookController.home.title"/> </title>
     <style>
         .error {
             color: red;
@@ -26,31 +27,32 @@
     <br/>
     <jsp:include page="leftColumn.jsp" flush="true"/>
 
-    <h1>Dodaj książkę</h1>
+    <h1><spring:message code="bookstore.AddBookController.addBook.addBook"/> </h1>
     <form:form method="post" modelAttribute="bookFormDTO">
-        Autor
+        <spring:message code="bookstore.AddBookController.addBook.author"/>
         <form:errors path="authors" cssClass="error"/> <br/>
         <form:select multiple="true" path="authors">
             <form:options items="${authorList}" itemValue="id" itemLabel="fullName"/>
         </form:select>
         <br/><br/>
-        Kategoria
+        <spring:message code="bookstore.AddBookController.addBook.category"/>
         <form:errors path="categories" cssClass="error"/> <br/>
         <form:select multiple="true" path="categories">
             <form:options items="${catList}" itemValue="id" itemLabel="categoryDescription"/>
         </form:select>
         <br/><br/>
-        Nazwa książki
+        <spring:message code="bookstore.AddBookController.addBook.title"/>
         <form:errors path="bookTitle" cssClass="error"/><br/>
         <form:input path="bookTitle"/><br/><br/>
-        Wydawca
+        <spring:message code="bookstore.AddBookController.addBook.publisher"/>
         <form:errors path="publisherName" cssClass="error"/> <br/>
         <form:input path="publisherName"/><br/><br/>
-        Cena
+        <spring:message code="bookstore.AddBookController.addBook.price"/>
         <form:errors path="price" cssClass="error"/> <br/>
         <form:input path="price"/><br/><br/>
         <br/>
-        <input type="submit" value="Wyślij">
+        <spring:message code="bookstore.AddBookController.addBook.send" var="send"/>
+        <input type="submit" value="${send}">
     </form:form>
 
 </div>
