@@ -28,7 +28,7 @@
     <jsp:include page="leftColumn.jsp" flush="true"/>
 
     <h1><spring:message code="bookstore.AddBookController.addBook.addBook"/> </h1>
-    <form:form method="post" modelAttribute="bookFormDTO">
+    <form:form enctype="multipart/form-data" method="post" modelAttribute="bookFormDTO">
         <spring:message code="bookstore.AddBookController.addBook.author"/>
         <form:errors path="authors" cssClass="error"/> <br/>
         <form:select multiple="true" path="authors">
@@ -49,9 +49,18 @@
         <form:input path="publisherName"/><br/><br/>
         <spring:message code="bookstore.AddBookController.addBook.price"/>
         <form:errors path="price" cssClass="error"/> <br/>
-        <form:input path="price"/><br/><br/>
+        <form:input path="price"/><br/>
         <br/>
+        <spring:message code="bookstore.AddBookController.addBook.coverImage"/>
+        <br/>
+        <input type="file" accept=".jpg,.jpeg,.JPG,.JPEG,.png,.PNG, image/vnd.sealedmedia.softseal-jpg, image/jpeg, image/png" name="file"/>
+        <br/><br/>
+        <spring:message code="bookstore.AddBookController.addBook.imageDescription"/>
+        <br/>
+        <input type="text" name="description"/>
+        <br/><br/>
         <spring:message code="bookstore.AddBookController.addBook.send" var="send"/>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         <input type="submit" value="${send}">
     </form:form>
 

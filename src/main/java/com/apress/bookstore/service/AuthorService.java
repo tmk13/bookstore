@@ -1,6 +1,8 @@
 package com.apress.bookstore.service;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 
@@ -20,8 +22,8 @@ public class AuthorService {
 	private AuthorRepository authorRepository;
 
 	@Transactional(readOnly = true)
-	public List<Author> getAuthorList() {
-		return (List<Author>)authorRepository.findAll();
+	public Set<Author> getAuthorList() {
+		return new LinkedHashSet<>((List<Author>)authorRepository.findAll());
 	}
 
 //	public List<Author> getAuthorList() {

@@ -2,6 +2,7 @@ package com.apress.bookstore.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -22,7 +23,7 @@ public class Book implements Serializable {
 
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 2229456471204000862L;
 
@@ -46,12 +47,17 @@ public class Book implements Serializable {
 	@ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
 	@OrderBy(value = "lastName")
 	@JoinTable(name = "book_author", joinColumns = @JoinColumn(name = "BOOK_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID"))
-	private List<Author> authors;
+	private Set<Author> authors;
 
 	@ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
 	@OrderBy(value = "categoryDescription")
 	@JoinTable(name = "book_category", joinColumns = @JoinColumn(name = "BOOK_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID"))
-	private List<Category> categories;
+	private Set<Category> categories;
+
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	@Column(name = "IMAGE", columnDefinition = "mediumblob")
+	private String image;
 
 	public Long getId() {
 		return id;
@@ -85,20 +91,28 @@ public class Book implements Serializable {
 		this.price = price;
 	}
 
-	public List<Author> getAuthors() {
+	public Set<Author> getAuthors() {
 		return authors;
 	}
 
-	public void setAuthors(List<Author> authors) {
+	public void setAuthors(Set<Author> authors) {
 		this.authors = authors;
 	}
 
-	public List<Category> getCategories() {
+	public Set<Category> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(List<Category> categories) {
+	public void setCategories(Set<Category> categories) {
 		this.categories = categories;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	@Override

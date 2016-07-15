@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Set;
 
 public class BookFormDTO {
 
@@ -20,10 +21,12 @@ public class BookFormDTO {
     private Float price;
 
     @NotNull
-    private List<Author> authors;
+    private Set<Author> authors;
 
     @NotNull
-    private List<Category > categories;
+    private Set<Category > categories;
+
+    private String image;
 
     public String getBookTitle() {
         return bookTitle;
@@ -49,19 +52,27 @@ public class BookFormDTO {
         this.price = price;
     }
 
-    public List<Author> getAuthors() {
+    public Set<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(Set<Author> authors) {
         this.authors = authors;
     }
 
-    public List<Category> getCategories() {
+    public Set<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

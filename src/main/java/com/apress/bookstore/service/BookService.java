@@ -1,14 +1,25 @@
 package com.apress.bookstore.service;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.TransactionManager;
 
 import com.apress.bookstore.dto.BookFormDTO;
 import com.apress.bookstore.repository.BookRepository;
 import com.apress.bookstore.validator.BookValidator;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -18,6 +29,7 @@ import com.apress.bookstore.entity.Book;
 import com.apress.bookstore.entity.Category;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class BookService {
@@ -29,10 +41,9 @@ public class BookService {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	@Secured("ROLE_ADMIN")
 	@Transactional(readOnly = true)
-	public List<Book> getAllBooksList() {
-		return (List<Book>)bookRepository.findAll();
+	public Set<Book> getAllBooksList() {
+		return new LinkedHashSet<>((List<Book>)bookRepository.findAll());
 	}
 //	public List<Book> getAllBooksList() {
 //		EntityManager em = DBManager.getManager().createEntityManager();
@@ -53,7 +64,7 @@ public class BookService {
 //	}
 
 	@Transactional(readOnly = true)
-	public List<Book> getBooksByCategoryList(String category) {
+	public Set<Book> getBooksByCategoryList(String category) {
 		return bookRepository.findByCategory(category);
 	}
 
@@ -72,8 +83,73 @@ public class BookService {
 //	}
 
 	@Transactional(readOnly = true)
-	public List<Book> getBooksByKeyWordList(String keyWord) {
+	public Set<Book> getBooksByKeyWordList(String keyWord) {
 		return bookRepository.findByKeyWord(keyWord);
+	}
+
+	@Transactional(readOnly = true)
+	public Book getBookById(Long id) {
+		return bookRepository.findOne(id);
+	}
+
+	@Transactional
+	public Book saveBook(Book book) {
+		return bookRepository.save(book);
+	}
+
+	public String scaleImage(MultipartFile file) {
+		try {
+			byte[] bytes = file.getBytes();
+
+			ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+			BufferedImage bufferedImage = ImageIO.read(in);
+			bufferedImage = Scalr.resize(bufferedImage, Scalr.Method.AUTOMATIC, 500, 400);
+
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			ImageIO.write(bufferedImage, "png", outputStream);
+			outputStream.flush();
+			byte[] resizedBytes = outputStream.toByteArray();
+			outputStream.close();
+
+			String image = Base64.encodeBase64String(resizedBytes);
+
+			return image;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public boolean downloadImage(Long id, HttpServletResponse response) {
+
+		Book book = getBookById(id);
+		String image = book.getImage();
+
+		byte[] bytes = Base64.decodeBase64(image);
+
+		response.setContentType("image/png");
+		response.setContentLength(bytes.length);
+
+		String headerValue = String.format("attachment; filename=\"%s\"", book.getBookTitle() + ".png");
+		response.setHeader("Content-Disposition", headerValue);
+
+		byte[] buffer = new byte[4096];
+		int byteRead;
+
+		try (ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes); OutputStream outputStream = response.getOutputStream()){
+
+			while ((byteRead = inputStream.read(buffer)) != -1) {
+				outputStream.write(buffer, 0, byteRead);
+			}
+
+			return true;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
 	}
 
 //	public List<Book> getBooksByKeyWordList(String keyWord) {
@@ -102,6 +178,7 @@ public class BookService {
 		book.setPrice(bookFormDTO.getPrice());
 		book.setAuthors(bookFormDTO.getAuthors());
 		book.setCategories(bookFormDTO.getCategories());
+		book.setImage(bookFormDTO.getImage());
 
 		return bookRepository.save(book);
 	}

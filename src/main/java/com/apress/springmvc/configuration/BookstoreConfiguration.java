@@ -1,51 +1,29 @@
 package com.apress.springmvc.configuration;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 import org.springframework.context.i18n.LocaleContext;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.core.Ordered;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.orm.jpa.EntityManagerFactoryInfo;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.servlet.LocaleContextResolver;
-import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import javax.persistence.EntityManagerFactory;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
-import java.io.IOException;
 import java.util.Locale;
-import java.util.Properties;
 
 @EnableWebMvc
 @Configuration
@@ -54,10 +32,8 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = {"com.apress.bookstore.repository"})
 @PropertySource("classpath:persistence-mysql.properties")
 @PropertySource("classpath:hibernate.properties")
-@ComponentScan(basePackages = {"com.apress.bookstore.controller", "com.apress.bookstore.entity", "com.apress.bookstore.service",
-        "com.apress.bookstore.validator", "com.apress.bookstore.dao", "com.apress.bookstore.repository",
-        "com.apress.springmvc.configuration"})
-public class AppConfiguration extends WebMvcConfigurerAdapter implements WebApplicationInitializer{
+@ComponentScan(basePackages = {"com.apress.bookstore.controller", "com.apress.springmvc.configuration"})
+public class BookstoreConfiguration extends WebMvcConfigurerAdapter {
 
     @Value("${dataSource.driverClassName}")
     private String driverClassName;
@@ -216,14 +192,22 @@ public class AppConfiguration extends WebMvcConfigurerAdapter implements WebAppl
         return localeResolver().resolveLocaleContext(httpServletRequest);
     }
 
+//    @Bean
+//    public CommonsMultipartResolver multipartResolver() {
+//        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+//        multipartResolver.setDefaultEncoding("UTF-8");
+//        multipartResolver.setMaxUploadSize(10000000);
+//        return multipartResolver;
+//    }
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("home");
     }
 
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        servletContext.setInitParameter("home", "/bookstore");
-        servletContext.setInitParameter("imageURL", "/bookstore/images");
-    }
+//    @Override
+//    public void onStartup(ServletContext servletContext) throws ServletException {
+//        servletContext.setInitParameter("home", "/bookstore");
+//        servletContext.setInitParameter("imageURL", "/bookstore/images");
+//    }
 }

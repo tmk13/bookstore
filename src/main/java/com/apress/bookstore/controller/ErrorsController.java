@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ErrorsController {
@@ -17,7 +18,7 @@ public class ErrorsController {
     private CategoryService categoryService;
 
     @ModelAttribute(value = "catList")
-    public List<Category> catList() {
+    public Set<Category> catList() {
         return categoryService.getCategoryList();
     }
 

@@ -1,28 +1,37 @@
 package com.apress.bookstore.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import com.apress.bookstore.repository.BookRepository;
-import com.apress.bookstore.repository.CategoryRepository;
-import com.apress.bookstore.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.LocaleContextResolver;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.ModelAndView;
-
+import com.apress.bookstore.entity.Author;
 import com.apress.bookstore.entity.Book;
 import com.apress.bookstore.entity.Category;
 import com.apress.bookstore.entity.User;
 import com.apress.bookstore.service.BookService;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import com.apress.bookstore.service.CategoryService;
+import org.apache.commons.codec.binary.Base64InputStream;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.imgscalr.Scalr;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+
+import org.apache.commons.codec.binary.Base64;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 @Controller
 public class BookController {
@@ -64,7 +73,7 @@ public class BookController {
 	}
 	@RequestMapping("/category.html")
 	public ModelAndView byCategoryBooksController(@RequestParam("category") String category, ModelAndView mav) {
-		mav.setViewName("category");
+		mav.setViewName("allBooks");
 		mav.addObject("allBooks", bookService.getBooksByCategoryList(category));
 		return mav;
 	}
@@ -74,6 +83,51 @@ public class BookController {
 		mav.setViewName("searchResult");
 		mav.addObject("allBooks", bookService.getBooksByKeyWordList(keyWord));
 		return mav;
+	}
+
+    @RequestMapping("/book.html")
+    public ModelAndView book(@RequestParam("id") Long id, ModelAndView modelAndView) {
+
+        Book book = bookService.getBookById(id);
+        modelAndView.addObject("book", book);
+
+		for (Author author : book.getAuthors()) {
+			System.out.print(author.getFullName() + ", ");
+		}
+		System.out.println();
+
+		modelAndView.setViewName("book");
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/editImage.html", method = RequestMethod.POST)
+    public ModelAndView editImage(@RequestParam("id") Long id, @RequestParam("file") MultipartFile file, ModelAndView modelAndView) {
+
+        if(!file.isEmpty()) {
+
+            Book book = bookService.getBookById(id);
+			String scaledImage = bookService.scaleImage(file);
+
+			if(scaledImage != null) {
+				book.setImage(scaledImage);
+				bookService.saveBook(book);
+			}
+        }
+
+        modelAndView.setViewName("redirect:/book.html?id=" + id);
+
+        return modelAndView;
+    }
+
+	@RequestMapping(value = "/downloadImage.do")
+	public ModelAndView downloadImage(@RequestParam("id") Long id, HttpServletResponse response, ModelAndView modelAndView) {
+
+		bookService.downloadImage(id, response);
+
+		modelAndView.setViewName("book.html?id=" + id);
+
+		return modelAndView;
 	}
 
 	@RequestMapping("/language.html")
@@ -88,7 +142,7 @@ public class BookController {
 	}
 
 	@ModelAttribute("catList")
-	public List<Category> catList() {
+	public Set<Category> catList() {
 		return categoryService.getCategoryList();
 	}
 

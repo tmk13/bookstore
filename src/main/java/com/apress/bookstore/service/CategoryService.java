@@ -7,7 +7,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CategoryService {
@@ -16,8 +18,8 @@ public class CategoryService {
 	private CategoryRepository categoryRepository;
 
 	@Transactional(readOnly = true)
-	public List<Category> getCategoryList() {
-		return (List<Category>)categoryRepository.findAll();
+	public Set<Category> getCategoryList() {
+		return new LinkedHashSet<>((List<Category>)categoryRepository.findAll());
 	}
 
 //	public List<Category> getCategoryList() {

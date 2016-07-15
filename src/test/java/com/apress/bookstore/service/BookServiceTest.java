@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 //@WebAppConfiguration
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(classes = {AppConfiguration.class, EntityManagerFactoriesConfiguration.class, SecurityConfig.class, SpringSecurityInitializer.class,
-//        TransactionManagersConfig.class, WebInit.class})
+//        TransactionManagersConfig.class})
 public class BookServiceTest {
 
 //    @Autowired

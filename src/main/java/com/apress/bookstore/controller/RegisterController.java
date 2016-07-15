@@ -2,6 +2,7 @@ package com.apress.bookstore.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.apress.bookstore.dto.RegistrationUserFormDTO;
 import com.apress.bookstore.repository.CategoryRepository;
@@ -85,7 +86,7 @@ public class RegisterController {
 	}
 
 	@ModelAttribute("catList")
-	public List<Category> catList() {
+	public Set<Category> catList() {
 		return categoryService.getCategoryList();
 	}
 
