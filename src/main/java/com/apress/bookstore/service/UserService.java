@@ -30,6 +30,8 @@ public class UserService {
 	private UserRepository userRepository;
 	@Autowired
 	private RoleRepository roleRepository;
+	@Autowired
+	private PasswordEncoderGenerator passwordEncoderGenerator;
 
 	public void validateUser(RegistrationUserFormDTO registrationUserFormDTO, BindingResult result) {
 		registerUserValidator.validate(registrationUserFormDTO, result);
@@ -39,7 +41,13 @@ public class UserService {
 	public User createUser(RegistrationUserFormDTO registrationUserFormDTO) {
 		User user = new User();
 		user.setUserName(registrationUserFormDTO.getName());
-		user.setUserPassword(registrationUserFormDTO.getPassword());
+
+		String hashedPassword = passwordEncoderGenerator.encodePassword(registrationUserFormDTO.getPassword());
+		if (hashedPassword.length() == 60)
+			user.setUserPassword(hashedPassword);
+		else
+			return null;
+
 		user.setEnabled(true);
 
 		Role role = getUserRole();
@@ -84,10 +92,10 @@ public class UserService {
 //		//return userDao.isUserNameExist(user);
 //	}
 
-	@Transactional(readOnly = true)
-	public User checkLogin(RegistrationUserFormDTO registrationUserFormDTO) {
-		return userRepository.findByUserNameAndUserPassword(registrationUserFormDTO.getName(), registrationUserFormDTO.getPassword());
-	}
+//	@Transactional(readOnly = true)
+//	public User checkLogin(RegistrationUserFormDTO registrationUserFormDTO) {
+//		return userRepository.findByUserNameAndUserPassword(registrationUserFormDTO.getName(), registrationUserFormDTO.getPassword());
+//	}
 
 //	public User checkLogin(User user) {
 //		EntityManager em = DBManager.getManager().createEntityManager();

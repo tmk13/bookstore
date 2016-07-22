@@ -18,6 +18,7 @@ import com.apress.bookstore.dto.BookFormDTO;
 import com.apress.bookstore.repository.BookRepository;
 import com.apress.bookstore.validator.BookValidator;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,29 +125,42 @@ public class BookService {
 	public boolean downloadImage(Long id, HttpServletResponse response) {
 
 		Book book = getBookById(id);
-		String image = book.getImage();
 
-		byte[] bytes = Base64.decodeBase64(image);
+		if(book != null) {
 
-		response.setContentType("image/png");
-		response.setContentLength(bytes.length);
+			String image = book.getImage();
 
-		String headerValue = String.format("attachment; filename=\"%s\"", book.getBookTitle() + ".png");
-		response.setHeader("Content-Disposition", headerValue);
+			byte[] bytes = Base64.decodeBase64(image);
 
-		byte[] buffer = new byte[4096];
-		int byteRead;
+			response.setContentType("image/png");
+			response.setContentLength(bytes.length);
 
-		try (ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes); OutputStream outputStream = response.getOutputStream()){
+			String headerValue = String.format("attachment; filename=\"%s\"", book.getBookTitle() + ".png");
+			response.setHeader("Content-Disposition", headerValue);
 
-			while ((byteRead = inputStream.read(buffer)) != -1) {
-				outputStream.write(buffer, 0, byteRead);
+			try {
+				IOUtils.copy(new ByteArrayInputStream(bytes), response.getOutputStream());
+				response.flushBuffer();
+			} catch (IOException e) {
+				e.printStackTrace();
+				response.setStatus(404);
 			}
 
-			return true;
+//			byte[] buffer = new byte[4096];
+//			int byteRead;
+//
+//			try (ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes); OutputStream outputStream = response.getOutputStream()) {
+//
+//				while ((byteRead = inputStream.read(buffer)) != -1) {
+//					outputStream.write(buffer, 0, byteRead);
+//				}
+//
+//				return true;
+//
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 
 		return false;

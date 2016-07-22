@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 
@@ -28,6 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder;
     }
 
     @Override
@@ -67,9 +75,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder> authenticationManagerBuilderInMemoryUserDetailsManagerConfigurer = auth.inMemoryAuthentication();
 
         JdbcUserDetailsManagerConfigurer<AuthenticationManagerBuilder> authenticationManagerBuilderJdbcUserDetailsManagerConfigurer = auth.jdbcAuthentication();
-        authenticationManagerBuilderJdbcUserDetailsManagerConfigurer.dataSource(dataSource).usersByUsernameQuery(
-                "SELECT USER_NAME, USER_PASSWORD, ENABLED FROM user WHERE USER_NAME=?").authoritiesByUsernameQuery(
-                "SELECT u.USER_NAME, r.ROLE_NAME FROM user u" +
+        authenticationManagerBuilderJdbcUserDetailsManagerConfigurer.dataSource(dataSource)
+                .passwordEncoder(passwordEncoder())
+                .usersByUsernameQuery("SELECT USER_NAME, USER_PASSWORD, ENABLED FROM user WHERE USER_NAME=?")
+                .authoritiesByUsernameQuery("SELECT u.USER_NAME, r.ROLE_NAME FROM user u" +
                         " JOIN user_role ur ON u.ID = ur.USER_ID" +
                         " JOIN role r ON ur.ROLE_ID = r.ID" +
                         " WHERE USER_NAME=?");
