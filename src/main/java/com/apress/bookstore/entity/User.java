@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -26,71 +28,33 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID", nullable = false)
+	@Getter
 	private Long id;
 
 	@Basic(optional = false)
 	@Column(name = "USER_NAME", nullable = false, length = 60)
+	@Setter
+	@Getter
 	private String userName;
 
 	@Basic(optional = false)
 	@Column(name = "USER_PASSWORD", nullable = false, length = 60)
+	@Setter
+	@Getter
 	private String userPassword;
 
 	@Basic(optional = false)
 	@Column(name = "ENABLED", nullable = false)
+	@Setter
+	@Getter
 	private Boolean enabled;
 
 	@ManyToMany
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"),
 							inverseJoinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID"))
+	@Setter
+	@Getter
 	private List<Role> roles;
-
-	public User() {
-		id = -1l;
-		userName = "";
-		userPassword = "";
-		enabled = false;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getUserPassword() {
-		return userPassword;
-	}
-
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
-	}
-
-	public Boolean getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public List<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
 
 	@Override
 	public int hashCode() {

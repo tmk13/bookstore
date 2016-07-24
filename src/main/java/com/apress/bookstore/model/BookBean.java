@@ -7,7 +7,7 @@ import com.apress.bookstore.entity.Book;
 
 public class BookBean {
 
-	private Book book = new Book();
+	private Book book = new Book(null, null, null, null, null, null);
 
 	public Book getBook() {
 		return book;

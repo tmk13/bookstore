@@ -1,5 +1,8 @@
 package com.apress.bookstore.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 import javax.persistence.Basic;
@@ -20,34 +23,21 @@ import javax.persistence.Table;
 public class Category implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 3552463141049182692L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID", nullable = false)
+	@Getter
 	private Long id;
 
 	@Basic(optional = false)
 	@Column(name = "DESCRIPTION_CATEGORY", nullable = false, length = 60)
+	@Setter
+	@Getter
 	private String categoryDescription;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getCategoryDescription() {
-		return categoryDescription;
-	}
-
-	public void setCategoryDescription(String categoryDescription) {
-		this.categoryDescription = categoryDescription;
-	}
 
 	@Override
 	public int hashCode() {

@@ -90,12 +90,6 @@ public class BookController {
 
         Book book = bookService.getBookById(id);
         modelAndView.addObject("book", book);
-
-		for (Author author : book.getAuthors()) {
-			System.out.print(author.getFullName() + ", ");
-		}
-		System.out.println();
-
 		modelAndView.setViewName("book");
 
         return modelAndView;

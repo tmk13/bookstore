@@ -1,5 +1,8 @@
 package com.apress.bookstore.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -10,21 +13,13 @@ public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
+    @Getter
     private Long id;
 
     @Basic(optional = false)
     @Column(name = "ROLE_NAME", nullable = false, length = 60)
+    @Setter
+    @Getter
     private String roleName;
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
 }

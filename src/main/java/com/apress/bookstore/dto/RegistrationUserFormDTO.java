@@ -1,5 +1,7 @@
 package com.apress.bookstore.dto;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -10,6 +12,8 @@ public class RegistrationUserFormDTO {
 
     @NotEmpty
     @Size(min = 3, max = 30)
+    @Setter
+    @Getter
     private String name;
 
 //    @NotEmpty
@@ -21,21 +25,8 @@ public class RegistrationUserFormDTO {
 
     @NotEmpty
     @Size(min = 4, max = 40)
+    @Setter
+    @Getter
     private String password;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

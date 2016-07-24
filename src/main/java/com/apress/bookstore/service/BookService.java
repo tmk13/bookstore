@@ -186,13 +186,15 @@ public class BookService {
 //		book.setId(null);
 //		entityManager.merge(book);
 
-		Book book = new Book();
-		book.setBookTitle(bookFormDTO.getBookTitle());
-		book.setPublisherName(bookFormDTO.getPublisherName());
-		book.setPrice(bookFormDTO.getPrice());
-		book.setAuthors(bookFormDTO.getAuthors());
-		book.setCategories(bookFormDTO.getCategories());
-		book.setImage(bookFormDTO.getImage());
+		Book book = new Book(bookFormDTO.getBookTitle(), bookFormDTO.getPublisherName(), bookFormDTO.getPrice(), bookFormDTO.getAuthors(),
+				bookFormDTO.getCategories(), bookFormDTO.getImage());
+
+//		book.setBookTitle(bookFormDTO.getBookTitle());
+//		book.setPublisherName(bookFormDTO.getPublisherName());
+//		book.setPrice(bookFormDTO.getPrice());
+//		book.setAuthors(bookFormDTO.getAuthors());
+//		book.setCategories(bookFormDTO.getCategories());
+//		book.setImage(bookFormDTO.getImage());
 
 		return bookRepository.save(book);
 	}

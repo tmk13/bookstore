@@ -62,7 +62,6 @@ public class LoginController {
 			redirect = "home.html";
 
 		if (result.hasErrors()) {
-			user.setId(null);
 			user.setUserName(null);
 			user.setUserPassword(null);
 
@@ -84,7 +83,6 @@ public class LoginController {
 	@RequestMapping(value = "/logoutOld.html", method = RequestMethod.POST)
 	public ModelAndView logoutOld(@ModelAttribute("user") User user, WebRequest request, ModelAndView mav) {
 
-		user.setId(null);
 		user.setUserName(null);
 		user.setUserPassword(null);
 

@@ -1,5 +1,8 @@
 package com.apress.bookstore.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 import javax.persistence.Basic;
@@ -27,39 +30,20 @@ public class Author implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID", nullable = false)
+	@Getter
 	private Long id;
 
 	@Basic(optional = false)
 	@Column(name = "FIRST_NAME", nullable = false, length = 20)
+	@Setter
+	@Getter
 	private String firstName;
 
 	@Basic(optional = false)
 	@Column(name = "LAST_NAME", nullable = false, length = 20)
+	@Setter
+	@Getter
 	private String lastName;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 
 	public String getFullName() {
 		return firstName + " " + lastName;
