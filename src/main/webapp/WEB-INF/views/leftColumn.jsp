@@ -9,6 +9,15 @@
     <link rel="stylesheet" href="css/bookstore.css" type="text/css"/>
     <script src="js/bookstore.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+
+    <script type="text/javascript">
+        var strings = new String();
+        strings['bookstore.BookController.home.search'] = "<spring:message code='bookstore.BookController.home.search' javaScriptEscape='true' />";
+        <%--strings['settings.authorFirstName'] = "<spring:message code='bookstore.BookController.home.authorFirstName' javaScriptEscape='true' />";--%>
+    </script>
+    <%--<spring:theme code="jsFile" var="js" />--%>
+    <%--<script type="text/javascript" src="${js}" />--%>
+
 </head>
 
 <body>
@@ -66,8 +75,8 @@
         <p/>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
         <input id="submit" type="submit" value=
-        <spring:message code="bookstore.BookController.leftColumn.search"/>
-                </form>
+        	<spring:message code="bookstore.BookController.leftColumn.search"/>
+        />
     </form>
 
         <br/><br/>

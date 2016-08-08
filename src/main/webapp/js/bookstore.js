@@ -15,6 +15,14 @@ $(document).ready(function() {
 	$("#grid tr:even").addClass('classEven');
 });
 
+// buildList('settings', [{
+//     search: strings['bookstore.BookController.home.search'],
+//     id:"setting1",
+//     installed: true
+// }])
+
+// alert(strings['bookstore.BookController.home.search']);
+// var str = str['bookstore.BookController.home.search']
 
 $(document).ready(function () {
 	  $("span.tooltip_message").hover(function () {

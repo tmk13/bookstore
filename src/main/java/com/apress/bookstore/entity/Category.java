@@ -1,25 +1,21 @@
 package com.apress.bookstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Set;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "category")
 @NamedQueries({
 		@NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c")
 })
+@AllArgsConstructor
 public class Category implements Serializable {
 
 	/**
@@ -38,6 +34,12 @@ public class Category implements Serializable {
 	@Setter
 	@Getter
 	private String categoryDescription;
+
+	@ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+	@JsonIgnore
+	@Getter
+	@Setter
+	private Set<Book> books;
 
 	@Override
 	public int hashCode() {

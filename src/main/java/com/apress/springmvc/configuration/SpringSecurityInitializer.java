@@ -1,5 +1,6 @@
 package com.apress.springmvc.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.multipart.support.MultipartFilter;
 
@@ -12,4 +13,5 @@ public class SpringSecurityInitializer extends AbstractSecurityWebApplicationIni
     protected void beforeSpringSecurityFilterChain(ServletContext servletContext) {
         insertFilters(servletContext, new MultipartFilter());
     }
+
 }

@@ -24,4 +24,6 @@ public interface BookRepository extends CrudRepository<Book, Long> {
             + " OR auths.firstName LIKE %?1%"
             + " OR auths.lastName LIKE %?1%")
     Set<Book> findByKeyWord(String keyWord);
+
+    Set<Book> findAll();
 }

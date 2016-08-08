@@ -32,7 +32,8 @@ import java.util.Locale;
 @EnableJpaRepositories(basePackages = {"com.apress.bookstore.repository"})
 @PropertySource("classpath:persistence-mysql.properties")
 @PropertySource("classpath:hibernate.properties")
-@ComponentScan(basePackages = {"com.apress.bookstore.controller", "com.apress.springmvc.configuration"})
+@ComponentScan(basePackages = {"com.apress.bookstore.controller", "com.apress.springmvc.configuration",
+                                "com.apress.bookstore.api"})
 public class BookstoreConfiguration extends WebMvcConfigurerAdapter {
 
     @Value("${dataSource.driverClassName}")

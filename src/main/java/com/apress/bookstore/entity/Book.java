@@ -25,6 +25,7 @@ import javax.persistence.*;
 				+ " OR auths.lastName LIKE :keyWord")
 })
 @NoArgsConstructor
+@AllArgsConstructor
 public class Book implements Serializable {
 
 

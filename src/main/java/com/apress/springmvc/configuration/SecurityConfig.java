@@ -14,7 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CsrfFilter;
 
+import javax.servlet.Filter;
 import javax.sql.DataSource;
 
 @Configuration
@@ -38,9 +40,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return encoder;
     }
 
+    protected Filter csrfCookieFilter() {
+        return new CsrfCookieFilter();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .addFilterAfter(csrfCookieFilter(), CsrfFilter.class)
                 .authorizeRequests()
                     .antMatchers("/").permitAll()
                     .antMatchers("/category.html").authenticated()

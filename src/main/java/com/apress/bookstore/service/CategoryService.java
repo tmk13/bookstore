@@ -19,7 +19,7 @@ public class CategoryService {
 
 	@Transactional(readOnly = true)
 	public Set<Category> getCategoryList() {
-		return new LinkedHashSet<>((List<Category>)categoryRepository.findAll());
+		return categoryRepository.findAll();
 	}
 
 //	public List<Category> getCategoryList() {

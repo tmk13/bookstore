@@ -23,7 +23,7 @@ public class AuthorService {
 
 	@Transactional(readOnly = true)
 	public Set<Author> getAuthorList() {
-		return new LinkedHashSet<>((List<Author>)authorRepository.findAll());
+		return authorRepository.findAll();
 	}
 
 //	public List<Author> getAuthorList() {

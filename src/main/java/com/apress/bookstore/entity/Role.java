@@ -10,7 +10,12 @@ import java.io.Serializable;
 @Table(name = "role")
 public class Role implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5978482232128534620L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     @Getter

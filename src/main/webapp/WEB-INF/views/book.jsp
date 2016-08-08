@@ -30,7 +30,7 @@
     <c:if test="${book.image != null}">
         <img src="data:image/png;base64,${book.image}"/>
         <br/>
-        <a href="downloadImage.do?id=${book.id}"><spring:message code="bookstore.RegisterController.register.save"/> </a>
+        <a href="downloadImage.do?id=${book.id}"><spring:message code="bookstore.BookController.book.saveImage"/> </a>
     </c:if>
     <c:if test="${book.image == null}">
         <%--<img src="data:image/png;base64,${book.image}"/><br/><br/> maybe some default image --%>
@@ -46,16 +46,6 @@
     <c:out value="${book.publisherName }"/><br/>
     <spring:message code="bookstore.AddBookController.addBook.price"/>:
     <c:out value="${book.price }"/><br/><br/>
-    <sec:authorize access="hasRole('ROLE_ADMIN')">
-        <form:form action="editImage.html?id=${book.id}" enctype="multipart/form-data" method="post">
-            <input type="file"
-                   accept=".jpg,.jpeg,.JPG,.JPEG,.png,.PNG, image/vnd.sealedmedia.softseal-jpg, image/jpeg, image/png"
-                   name="file"/><br/><br/>
-            <spring:message code="bookstore.RegisterController.register.save" var="save"/>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <input type="submit" value="${save}"/>
-        </form:form>
-    </sec:authorize>
 
 </div>
 

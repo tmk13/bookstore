@@ -1,5 +1,6 @@
 package com.apress.bookstore.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,7 @@ import javax.persistence.Table;
 @NamedQueries({
 		@NamedQuery(name = "Author.findAll", query = "SELECT a FROM Author a")
 })
+@AllArgsConstructor
 public class Author implements Serializable {
 
 	/**
